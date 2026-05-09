@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دعوة خطوبة الحسن وآية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        :root { --primary: #8e7366; --bg: #f4ece6; --envelope-color: #dbc0b1; --paper-color: #ffffff; }
+        body { margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; background-color: var(--bg); overflow: hidden; font-family: 'Cairo', sans-serif; }
+        .envelop-container { position: relative; width: 320px; height: 220px; perspective: 1000px; cursor: pointer; z-index: 10; }
+        .envelope { position: relative; width: 100%; height: 100%; background: var(--envelope-color); border-radius: 0 0 15px 15px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); transform-style: preserve-3d; }
+        .envelope::after { content: "إلى أغلى الناس.. اضغط هنا 📩"; position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 16px; width: 100%; text-align: center; z-index: 10; font-weight: bold; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .flap { position: absolute; top: 0; width: 0; height: 0; border-left: 160px solid transparent; border-right: 160px solid transparent; border-top: 120px solid var(--envelope-color); transform-origin: top; transition: transform 0.8s ease; z-index: 6; }
+        .pocket { position: absolute; top: 0; width: 0; height: 0; border-left: 160px solid #e7d5ca; border-right: 160px solid #e7d5ca; border-bottom: 110px solid #d4b3a2; border-top: 110px solid transparent; z-index: 5; border-radius: 0 0 15px 15px; }
+        .letter { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); width: 290px; background: var(--paper-color); padding: 30px 20px; box-sizing: border-box; transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2; border-radius: 10px; display: flex; flex-direction: column; align-items: center; text-align: center; opacity: 0; visibility: hidden; }
+        .open .flap { transform: rotateX(180deg); z-index: 1; }
+        .open .letter { transform: translate(-50%, -260px) scale(1.15); opacity: 1; visibility: visible; z-index: 20; box-shadow: 0 10px 60px rgba(0,0,0,0.25); }
+        .letter h1 { font-family: 'Amiri', serif; color: var(--primary); font-size: 24px; margin: 0 0 10px 0; }
+        .names { font-size: 26px; font-weight: bold; color: #444; margin: 15px 0; }
+        .details { font-size: 15px; color: #666; line-height: 1.8; margin-bottom: 20px; }
+        .location-btn { background: #25D366; color: white; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-size: 14px; font-weight: bold; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); transition: 0.3s; }
+    </style>
+</head>
+<body>
+
+    <!-- موسيقى فستانك الأبيض وصوت الورق -->
+    <audio id="paperSound" src="https://www.soundjay.com/misc/sounds/paper-opening-1.mp3"></audio>
+    <audio id="music" src="https://files.catbox.moe/k3805i.mp3" loop></audio>
+
+    <div class="envelop-container" id="mainContainer" onclick="openEnvelope()">
+        <div class="envelope" id="env">
+            <div class="flap"></div>
+            <div class="pocket"></div>
+            <div class="letter">
+                <h1>حفل خطوبة</h1>
+                <div class="names">الحسن <span style="color:var(--primary)">∞</span> آية</div>
+                <div class="details">
+                    فرحتنا تكتمل بوجودكم <br>
+                    <strong>الثلاثاء، 26 مايو 2026</strong> <br>
+                    الساعة 4:00 عصراً <br>
+                    📍 حي الجامعة
+                </div>
+                <a href="https://wa.me/9647717715320?text=تم+استلام+الدعوة+بكل+سرور..+ألف+مبروك+للحسن+وآية!+يسعدني+الحضور" 
+                   class="location-btn" target="_blank">تأكيد الحضور عبر واتساب ✅</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isOpened = false;
+        function openEnvelope() {
+            if (isOpened) return;
+            isOpened = true;
+            
+            const container = document.getElementById('mainContainer');
+            const paperSound = document.getElementById('paperSound');
+            const music = document.getElementById('music');
+
+            container.classList.add('open');
+            
+            // تشغيل صوت الورق فوراً
+            paperSound.play();
+            
+            // تشغيل أغنية فستانك الأبيض
+            setTimeout(() => {
+                music.play().catch(e => console.log("تحتاج للمسة لتشغيل الصوت"));
+            }, 500);
+
+            // انفجار ورود 🌸
+            var duration = 4 * 1000;
+            var end = Date.now() + duration;
+            (function frame() {
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ffc0cb', '#8e7366'] });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ffc0cb', '#8e7366'] });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
+        }
+    </script>
+</body>
+</html>
